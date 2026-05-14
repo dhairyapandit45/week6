@@ -73,12 +73,12 @@ function EditEmployee() {
     }
   };
 
-  // loading UI
+  // loading state
   if (loading && !emp) {
     return <p className="text-center text-2xl">Loading...</p>;
   }
 
-  // error UI
+  // show err
   if (error) {
     return <p className="text-center text-red-500 text-xl">{error}</p>;
   }

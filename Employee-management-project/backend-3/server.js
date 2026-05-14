@@ -8,34 +8,35 @@ dotenv.config();
 
 const app = exp();
 
-// CORS middleware
+// cors config
 app.use(
   cors({
-
-origin: ["http://localhost:5173", "https://your-frontend-project.vercel.app"],
-
+    origin: [
+      "http://localhost:5173",
+      process.env.FRONTEND_URL,
+    ].filter(Boolean),
   })
 );
 
-// body parser middleware
+// parser
 app.use(exp.json());
 
-// test route (optional but useful)
+// test endpoint
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// emp api middleware
+// api routes
 app.use("/emp-api", empRoute);
 
-// invalid path
+// 404 handler
 app.use((req, res, next) => {
   return res.status(404).json({
     message: `path ${req.url} is invalid`
   });
 });
 
-// error handler ✅ moved BEFORE DB start
+// error handler
 app.use((err, req, res, next) => {
   console.log(err.name);
 
@@ -63,7 +64,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Server side error" });
 });
 
-// connect to db
+// db connection
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URL);
